@@ -1,10 +1,10 @@
 <?php
 
     session_start();
-    if( $_SESSION['loginname'] ){
+    if( isset($_SESSION['loginname']) ){
         return;
     }else{
-        header("Refresh:10;url=../web/login.html");
+        header("Refresh:0;url=../web/login.html");
         die();
     }
 

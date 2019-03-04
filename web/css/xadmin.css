@@ -291,7 +291,8 @@ body{
     display: table-cell;
     float: none!important;
     vertical-align: top;
-    max-width: 250px;
+	max-width: 250px;
+	/* margin-bottom: 40px; */
     /*width: 0px;*/
 }
 .wrapper .left-nav #nav li{
@@ -371,6 +372,8 @@ xblock{
 }
 
 .footer{
+	position: absolute;
+	bottom: 0;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0.25);
 	border-top: 1px solid rgba(255, 255, 255, 0.2);
