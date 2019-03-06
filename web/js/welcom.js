@@ -16,6 +16,7 @@ layui.use('table', function(){
       ,parseData: function(res){ //res 即为原始返回的数据
         console.log(res)
 
+
         return {
           "code": res.code, //解析接口状态
           "msg": res.msg, //解析提示文本

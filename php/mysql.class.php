@@ -1,5 +1,6 @@
 
 <?php 
+$GLOBAL['sql']=null;
 class mysql
 {
   private $mysqli;
@@ -38,6 +39,7 @@ class mysql
     if (!empty($where)) {
       $sql = $sql . ' WHERE ' . $where;
     }
+    $GLOBAL['sql'] = $sql;
     $this->result = $this->mysqli->query($sql);
     return $this->result->num_rows;
 

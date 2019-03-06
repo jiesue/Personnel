@@ -1,6 +1,6 @@
-var el = document.getElementById('user-table');
+var el = document.getElementById('dept-table');
 
-var userTable = new Vue({
+var deptTable = new Vue({
     el: el,
     data: {
         update: false,
@@ -11,15 +11,15 @@ var userTable = new Vue({
         getData(){
             $.ajax({
                 type: 'get',
-                url: '../php/getUser.php',
+                url: '../php/getDept.php',
                 data: '',
                 complete: function (res) {
                     if (res.status === 200) {
                         //   console.log(res.responseText)
                         var resObj = JSON.parse(res.responseText);
                         //   console.log(resObj.data)
-                        userTable.count = resObj.count;
-                        userTable.tableData = resObj.data;
+                        deptTable.count = resObj.count;
+                        deptTable.tableData = resObj.data;
     
                         // console.log(tableData)
     

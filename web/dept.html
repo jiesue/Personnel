@@ -206,24 +206,19 @@
                 <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button
                         class="layui-btn" onclick="member_add('添加用户','user-add.html','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span
                         class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
-                <table class="layui-table" id="user-table">
+                <table class="layui-table" id="dept-table">
                     <thead>
                         <tr>
                             <th>
                                 <input type="checkbox" name="" value="">
                             </th>
                             <th>
-                                ID
+                                部门ID
                             </th>
                             <th>
-                                账号
+                                部门名称
                             </th>
-                            <th>
-                                昵称
-                            </th>
-                            <th>
-                                状态
-                            </th>
+                           
                             <th>
                                 创建日期
                             </th>
@@ -239,47 +234,30 @@
                                 <input type="checkbox" value="1" name="">
                             </td>
                             <td>
-                                {{item.user_id}}
+                                {{item.dept_id}}
                             </td>
                             <td>
-                               
-                                    {{item.loginname}}
+                                
+                                    {{item.name}}
                                 
                             </td>
                             <td>
-                                {{item.nickname}}
-                            </td>
-                            <td class="td-status">
-                                <span class="layui-btn layui-btn-mini" :class="item.status ==='1'? 'layui-btn-normal':'layui-btn-disabled'">
-                                    {{item.status ==='1'? '已啟用':'已停用'}}
-                                </span>
-                            </td>
-
-                            <td>
                                 {{item.createdate}}
                             </td>
+            
 
-                            <td class="td-manage" :data-id="item.user_id">
+                        
+
+                            <td class="td-manage" :data-id="item.dept_id">
                                 <!-- 获取ID在这里-->
 
-                                <a v-if="item.status==1" style="text-decoration:none" onclick="member_stop(this)" href="javascript:;"
-                                    title="停用">
+                          
 
-                                    <i class="layui-icon"> &#xe601;</i>
-                                </a>
-                                <a v-else style="text-decoration:none" onclick="member_start(this)" href="javascript:;"
-                                    title="啟用">
-                                    <i class="layui-icon"> &#xe62f;</i>
-                                </a>
-
-                                <!-- <a title="编辑" href="javascript:;" onclick="member_edit('编辑','user-edit.html',this,'','510')"
+                                <a title="编辑" href="javascript:;" onclick="member_edit('编辑','user-edit.html',this,'','510')"
                                     class="ml-5" style="text-decoration:none">
                                     <i class="layui-icon">&#xe642;</i>
-                                </a> -->
-                                <a style="text-decoration:none" onclick="member_password('修改密码','user-password.html',this,'600','400')"
-                                    href="javascript:;" title="修改密码">
-                                    <i class="layui-icon">&#xe631;</i>
                                 </a>
+                                
                                 <a title="删除" href="javascript:;" onclick="user_del(this)" style="text-decoration:none">
                                     <i class="layui-icon">&#xe640;</i>
                                 </a>
@@ -338,7 +316,7 @@
     </div>
     <!--vue相关代码  -->
     <script type="text/javascript" src="./js/vue.js"></script>
-    <script type="text/javascript" src="./js/user.js"></script>
+    <script type="text/javascript" src="./js/dept.js"></script>
     <!-- 背景切换结束 -->
     <!-- 页面动态效果 -->
     <script>
@@ -532,14 +510,7 @@
         }
     </script>
     <script>
-        //百度统计可去掉
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
+
     </script>
 </body>
 

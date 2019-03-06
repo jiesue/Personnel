@@ -128,8 +128,26 @@ $(function () {
     //初始化菜单展开样式
     $('.left-nav #nav li .opened').siblings('a').find('.nav_right').html('&#xe6a6;');
 
-    
+    function showNickname(){
+        $.ajax({
+            type:'post',
+            url:'../php/getNickname.php',
+            complete:function(res){
+               // console.log(res)
+                if (res.status === 200) {
+                    var res = JSON.parse(res.responseText)
+                    // console.log(res[0].nickname)
+                    // console.log($('#nickname'))
+                    $('#nickname').html(res[0].nickname);
+                    
 
+                } 
+              
+            }
+        })
+    }
+    showNickname();
+    
 
 
 
