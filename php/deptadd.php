@@ -3,17 +3,16 @@ include 'mysql.class.php';
 include 'checkLogin.php';
 
 
-$loginname = $_POST['loginname'];
-$pass = $_POST['pass'];
-$nickname = $_POST['nickname'];
+$dept_id = $_POST['dept_id'];
+$name = $_POST['name'];
 
 // $res = $mysql->fetchAll();
-$num = $mysql->select('user', '', " loginname = '${loginname}' ");
-$dataArr = array('loginname' => $loginname , 'password' => $pass, 'nickname' => $nickname );
+$num = $mysql->select('dept', '', " dept_id = '${dept_id}' ");
+$dataArr = array('dept_id' => $dept_id , 'name' => $name);
 if(!$num){
-    $res = $mysql->insert('user', $dataArr);
+    $res = $mysql->insert('dept', $dataArr);
     echo $res;
-    if($res){
+    if(isset($res)){
         httpStatus(200);
     }else{
         httpStatus(401);
