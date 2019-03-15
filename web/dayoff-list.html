@@ -25,7 +25,7 @@
       <a href="">首页</a>
       <a href="">员工管理</a>
       <a>
-        <cite>员工列表</cite>
+        <cite>请假申请表</cite>
       </a>
     </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);"
@@ -45,7 +45,7 @@
       <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
       <button class="layui-btn" onclick="x_admin_show('添加用户','./emp-add.html',600,400)"><i class="layui-icon"></i>添加</button>
     </xblock>
-
+   
 
 
 
@@ -74,7 +74,34 @@
     });
 
     /*用户-停用*/
-    f
+    function emp_stop(obj, id) {
+      layer.confirm('确认要停用吗？', function (index) {
+
+        if ($(obj).attr('title') == '启用') {
+
+          //发异步把用户状态进行更改
+          $(obj).attr('title', '停用')
+          $(obj).find('i').html('&#xe62f;');
+
+          $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+          layer.msg('已停用!', {
+            icon: 5,
+            time: 1000
+          });
+
+        } else {
+          $(obj).attr('title', '启用')
+          $(obj).find('i').html('&#xe601;');
+
+          $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+          layer.msg('已启用!', {
+            icon: 5,
+            time: 1000
+          });
+        }
+
+      });
+    }
 
     /*用户-删除*/
     function emp_del(obj, id) {
@@ -109,81 +136,38 @@
 
       //执行一个laydate实例
       table.render({
-        elem: '#emp-list',
-        height: 430,
-        url: '../php/getEmp.php' //数据接口
-          ,
-        cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
-          ,
-        title: '员工表',
-        page: true //开启分页
-          ,
-        toolbar: true //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
-          // ,totalRow: true //开启合计行
-          ,
-        cols: [
-            [ //表头
-              {
-                type: 'checkbox',
-                fixed: 'left'
-              }, {
-                field: 'emp_id',
-                title: 'ID',
-                sort: true,
-                fixed: 'left'
-              }, {
-                field: 'name',
-                title: '姓名',
-              }, {
-                field: 'dept_name',
-                title: '所属部门',
-                sort: true,
-                totalRow: true
-              }, {
-                field: 'sex',
-                title: '性别',
-                sort: true
-              }, {
-                field: 'tel',
-                title: '电话号码',
-                sort: true,
-                totalRow: true
-              }, {
-                field: 'education',
-                title: '学历',
-                sort: true,
-                totalRow: true
-              }, {
-                field: 'join_date',
-                title: '加入日期',
-                width: 150,
-                sort: true,
-                totalRow: true
-              }, {
-                fixed: 'right',
-                width: 190,
-                align: 'center',
-                toolbar: '#barDemo'
-              }
-            ]
-          ]
+        elem: '#emp-list'
+        ,height: 430
+        ,url: '../php/getDayoff.php' //数据接口
+        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        ,title: '员工表'
+        ,page: true //开启分页
+        ,toolbar: true //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+        // ,totalRow: true //开启合计行
+        ,cols: [[ //表头
+          {type: 'checkbox', fixed: 'left'}
+          ,{field: 'dayoff_id', title: '请假编号', sort: true, fixed: 'left'}
+          ,{field: 'emp_id', title: '员工ID ',}
+          ,{field: 'name', title: '员工名字', sort: true, totalRow: true}
+          ,{field: 'start', title: '开始时间',width:150,  sort: true, totalRow: true}
+          ,{field: 'end', title: '结束时间',width:150,  sort: true, totalRow: true}
+          ,{fixed: 'right', width: 190, align:'center', toolbar: '#barDemo'}
+        ]]
+       
+        ,done:function(res, curr, count){
 
-          ,
-        done: function (res, curr, count) {
-
-
+            console.log(res)
         }
       });
 
-
+     
       //监听行工具事件
-      table.on('tool(emp-list)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      table.on('tool(emp-list)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
-          ,
-          layEvent = obj.event; //获得 lay-event 对应的值
-        if (layEvent === 'detail') {
+        ,layEvent = obj.event; //获得 lay-event 对应的值
+        if(layEvent === 'detail'){
           layer.msg('查看操作');
-        } else if (layEvent === 'del') {
+        } else if(layEvent === 'del'){
           layer.confirm('真的删除行么', function (index) {
             obj.del(); //删除对应行（tr）的DOM结构
             layer.close(index);
@@ -192,9 +176,9 @@
               type: 'post',
               url: '../php/del.php',
               data: {
-                id: data.emp_id,
-                table: 'emp',
-                field: 'emp_id'
+                id: data.dayoff_id,
+                table: 'dayoff',
+                field: 'dayoff_id'
               },
               complete: function (res) {
                 console.log(res)
@@ -205,15 +189,16 @@
               }
             })
           });
-        } else if (layEvent === 'edit') {
+        } else if(layEvent === 'edit'){
           layer.msg('编辑操作');
-          var url=createURL('./emp-edit.html',data)
-          x_admin_show('修改员工信息',url,600,400)
         }
       });
 
-
+    
     });
+
+
+
   </script>
 </body>
 

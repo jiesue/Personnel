@@ -5,12 +5,18 @@ include 'checkLogin.php';
 
 $dept_id = $_POST['dept_id'];
 $name = $_POST['name'];
+$sex = $_POST['sex'];
+$email = $_POST['email'];
+$address = $_POST['address'];
+$tel = $_POST['tel'];
+$birthday = $_POST['birthday'];
+$education = $_POST['education'];
 
 // $res = $mysql->fetchAll();
 
-$dataArr = array('dept_id' => $dept_id , 'name' => $name);
+$dataArr = array('dept_id' => $dept_id , 'name' => $name, 'sex' => $sex, 'email' => $email, 'address' => $address, 'tel' => $tel, 'birthday' => $birthday, 'name' => $education);
 
-    $res = $mysql->insert('dept', $dataArr);
+    $res = $mysql->insert('emp', $dataArr);
     echo $res;
     if(isset($res)){
         httpStatus(200);

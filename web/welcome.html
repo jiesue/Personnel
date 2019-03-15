@@ -8,11 +8,13 @@
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
         <link rel="stylesheet" href="./css/font.css">
         <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
     </head>
     <body>
     <div class="x-body">
-        <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53</blockquote>
+        <blockquote class="layui-elem-quote">欢迎用户：
+            <span class="x-red" id='nickname'>test</span>！当前时间:2018-04-25 20:50:53</blockquote>
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
             <div class="layui-field-box">
@@ -24,46 +26,34 @@
                                     <ul class="layui-row layui-col-space10 layui-this">
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>文章数</h3>
+                                                <h3>员工数</h3>
                                                 <p>
-                                                    <cite>66</cite></p>
+                                                    <cite id="empNum">66</cite></p>
                                             </a>
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>会员数</h3>
+                                                <h3>部门数</h3>
                                                 <p>
-                                                    <cite>12</cite></p>
+                                                    <cite id="deptNum">12</cite></p>
                                             </a>
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>回复数</h3>
+                                                <h3 >请假人数</h3>
                                                 <p>
-                                                    <cite>99</cite></p>
+                                                    <cite id="dayoffNum">99</cite></p>
                                             </a>
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>商品数</h3>
+                                                <h3>历史离职人数</h3>
                                                 <p>
-                                                    <cite>67</cite></p>
+                                                    <cite id="leaveoffNum">67</cite>
+                                                </p>
                                             </a>
                                         </li>
-                                        <li class="layui-col-xs2">
-                                            <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>文章数</h3>
-                                                <p>
-                                                    <cite>67</cite></p>
-                                            </a>
-                                        </li>
-                                        <li class="layui-col-xs2">
-                                            <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>文章数</h3>
-                                                <p>
-                                                    <cite>6766</cite></p>
-                                            </a>
-                                        </li>
+                                       
                                     </ul>
                                 </div>
                             </div>
@@ -75,7 +65,7 @@
         <fieldset class="layui-elem-field">
             <legend>系统通知</legend>
             <div class="layui-field-box">
-                <table class="layui-table" lay-skin="line">
+                <!-- <table class="layui-table" lay-skin="line">
                     <tbody>
                         <tr>
                             <td >
@@ -88,7 +78,8 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
+                <table class="layui-hide" id="notice-list" lay-filter="notice-list"></table>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
@@ -140,26 +131,78 @@
                     <tbody>
                         <tr>
                             <th>版权所有</th>
-                            <td>xuebingsi(xuebingsi)
+                            <td>jiesue
                                 <a href="http://x.xuebingsi.com/" class='x-a' target="_blank">访问官网</a></td>
                         </tr>
                         <tr>
                             <th>开发者</th>
-                            <td>马志斌(113664000@qq.com)</td></tr>
+                            <td>jiesue</td></tr>
                     </tbody>
                 </table>
             </div>
         </fieldset>
-        <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>
+        <blockquote class="layui-elem-quote layui-quote-nm">感谢cctv,本系统由x-admin提供技术支持。</blockquote>
     </div>
         <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
+            function showNickname(){
+                $.ajax({
+                    type:'post',
+                    url:'../php/getNickname.php',
+                    complete:function(res){
+                    console.log(res)
+                        if (res.status === 200) {
+                            // var res = JSON.parse(res.responseText)
+
+                            $('#nickname').html(res.responseText);
+                            
+            
+                        } 
+                    
+                    }
+                })
+            }
+    showNickname();
+
+
+            layui.use('table', function () {
+                var table = layui.table;
+
+                //执行一个laydate实例
+                table.render({
+                    elem: '#notice-list'
+                    // ,height: 430
+                    ,url: '../php/getNotice.php' //数据接口
+                    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    ,title: '通知'  
+                    ,cols: [[ //表头
+                    {field: 'notice_id', title: '通知ID', width: 80,sort: true, fixed: 'left'}
+                    ,{field: 'title', title: '标题', sort: true, totalRow: true}
+                    ,{field: 'content', title: '通知内容'}
+                    ,{field: 'create_date', title: '发布时间', sort: true, totalRow: true}
+                    ]]
+                
+                    ,done:function(res, curr, count){
+
+                        console.log(res)
+                    }
+                })
+            })
+             $.ajax({
+                      type:'post',
+                      url:'../php/getNum.php',
+                      complete:function(res){
+                          if(res.status===200){
+
+                            console.log(res.responseText)
+                            var data = JSON.parse(res.responseText).data;
+                            $('#empNum').html(data[0]);
+                            $('#deptNum').html(data[1]);
+                            $('#dayoffNum').html(data[2]);
+                            $('#leaveoffNum').html(data[3]);
+
+                          }  
+                      }
+                  })
         </script>
     </body>
 </html>

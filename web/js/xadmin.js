@@ -412,5 +412,26 @@ function x_admin_father_reload(){
 }
 
 
-
+function createURL(url, param) {
+    var urlLink = '';
+    $.each(param, function(item, key) {
+        var link = '&' + item + "=" + key;
+        urlLink += link;
+    })
+    urlLink = url + "?" + urlLink.substr(1);
+    return urlLink.replace(' ', '');
+}
+function parseQueryString(url) {
+    var result = {};
+    if (url.indexOf('?') > -1) {
+        var str = url.split('?')[1];  
+        var temp = str.split('&');  
+        for (var i = 0; i < temp.length; i++) {     
+            var temp2 = temp[i].split('=');     
+            result[temp2[0]] = temp2[1];  
+        }  
+    }
+    return result;
+}
+}
 

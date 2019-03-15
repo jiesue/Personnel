@@ -111,13 +111,13 @@
                 <label for="L_repass" class="layui-form-label">
                 </label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                    修改
                 </button>
             </div>
         </form>
     </div>
     <script>
-        //设置增加时的部门下拉选框
+        //设置部门下拉选框
         $.ajax({
             type: 'post',
             url: '../php/getDept.php',
@@ -137,6 +137,8 @@
                 }
             }
         })
+        
+        var urlData = parseQueryString(window.location.href)
 
 
         layui.use(['form', 'layer'], function () {
@@ -159,20 +161,19 @@
                 }
             });
 
-
             //监听提交
             form.on('submit(add)', function (data) {
                 alert(1)
                 // data.field.id = id;
                 $.ajax({
                     type: 'post',
-                    url: '../php/empadd.php',
+                    url: '../php/empedit.php',
                     data: data.field,
                     complete: function (res) {
                         console.log(res)
                         if (res.status === 200) {
 
-                            layer.alert("增加成功", {
+                            layer.alert("修改成功", {
                                 icon: 6
                             }, function () {
                                 //关闭当前frame
