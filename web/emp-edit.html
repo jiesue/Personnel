@@ -27,7 +27,7 @@
                 <label for="L_dept_name" class="layui-form-label">
                     <span class="x-red">*</span>部门
                 </label>
-                <div class="layui-input-inline"  id='dept_select' style="display:block">
+                <div class="layui-input-inline"  id="dept_select" style="display:block">
                     <!-- <input type="text" id="L_dept_name" name="dept_name" required="" lay-verify="" autocomplete="off"
                         class="layui-input"> -->
                 </div>
@@ -61,7 +61,7 @@
                     <span class="x-red">*</span>e-mail
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_repass" name="email" required="" lay-verify="" autocomplete="off"
+                    <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off"
                         class="layui-input">
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     <span class="x-red">*</span>住址
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_address" name="address" required="" lay-verify="" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_address" name="address" required="" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -78,7 +78,7 @@
                     <span class="x-red">*</span>电话
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_tel" name="tel" required="" lay-verify="" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_tel" name="tel" required="" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -86,7 +86,7 @@
                     <span class="x-red">*</span>出生年份（如：1996）
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_birthday" name="birthday" required="" lay-verify="" autocomplete="off"
+                    <input type="text" id="L_birthday" name="birthday" required="" lay-verify="required" autocomplete="off"
                         class="layui-input">
                 </div>
             </div>
@@ -96,8 +96,8 @@
                 </label>
 
                 <div class="layui-input-block">
-                    <input type="radio" name="education" value="小学" title="小学">
-                    <input type="radio" name="education" value="初中" title="初中" checked>
+                    <input type="radio" name="education" value="小学" title="小学" checked>
+                    <input type="radio" name="education" value="初中" title="初中">
                     <input type="radio" name="education" value="高中" title="高中">
                     <input type="radio" name="education" value="大专" title="大专">
                     <input type="radio" name="education" value="本科" title="本科">
@@ -117,6 +117,21 @@
         </form>
     </div>
     <script>
+
+        var urlData = parseQueryString(decodeURI(window.location.href))
+        console.log(urlData)
+        $('#L_name').val(urlData.name);
+        if(urlData.sex == '男'){
+            $('[name = sex]').eq(0).attr('checked',true);
+        }
+        $('#L_email').val(urlData.email);
+        $('#L_address').val(urlData.address);
+        $('#L_tel').val(urlData.tel);
+
+        
+
+
+
         //设置部门下拉选框
         $.ajax({
             type: 'post',
@@ -129,7 +144,13 @@
                     console.log(data);
 
                     for(var i=0; i<data.length; i++){
-                        var html = " <option value='"+data[i].dept_id+"'> "+data[i].dept_name+" </option>";
+                        if(data[i].dept_id == urlData.dept_id){
+                            var html = " <option value='"+data[i].dept_id+"' selected> "+data[i].dept_name+" </option>";
+
+                        }else{
+                            var html = " <option value='"+data[i].dept_id+"'> "+data[i].dept_name+" </option>";
+
+                        }
                         $(html).appendTo(target);
                     }
                     $(target).appendTo($('#dept_select'))
@@ -138,8 +159,6 @@
             }
         })
         
-        var urlData = parseQueryString(window.location.href)
-
 
         layui.use(['form', 'layer'], function () {
             $ = layui.jquery;
@@ -163,8 +182,9 @@
 
             //监听提交
             form.on('submit(add)', function (data) {
-                alert(1)
+                // alert(1)
                 // data.field.id = id;
+                data.field.emp_id = urlData.emp_id;
                 $.ajax({
                     type: 'post',
                     url: '../php/empedit.php',
@@ -187,9 +207,7 @@
 
 
                         } else if (res.status === 400) {
-                            layer.msg('账号已存在！！')
-                        } else if (res.status === 401) {
-                            layer.msg('增加失败！！')
+                            layer.msg('失败！！')
                         }
                     }
 

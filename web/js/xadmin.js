@@ -419,7 +419,9 @@ function createURL(url, param) {
         urlLink += link;
     })
     urlLink = url + "?" + urlLink.substr(1);
-    return urlLink.replace(' ', '');
+    // return urlLink.replace(' ', '');
+    return urlLink;
+
 }
 function parseQueryString(url) {
     var result = {};
@@ -432,6 +434,5 @@ function parseQueryString(url) {
         }  
     }
     return result;
-}
 }
 

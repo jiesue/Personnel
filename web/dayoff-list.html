@@ -43,13 +43,13 @@
     </div>
     <xblock>
       <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-      <button class="layui-btn" onclick="x_admin_show('添加用户','./emp-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+      <button class="layui-btn" onclick="x_admin_show('添加用户','./dayoff-add.html',600,400)"><i class="layui-icon"></i>添加</button>
     </xblock>
    
 
 
 
-    <table class="layui-hide" id="emp-list" lay-filter="emp-list"></table>
+    <table class="layui-hide" id="dayoff-list" lay-filter="dayoff-list"></table>
 
     <script type="text/html" id="barDemo">
       <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
@@ -73,38 +73,9 @@
       });
     });
 
-    /*用户-停用*/
-    function emp_stop(obj, id) {
-      layer.confirm('确认要停用吗？', function (index) {
-
-        if ($(obj).attr('title') == '启用') {
-
-          //发异步把用户状态进行更改
-          $(obj).attr('title', '停用')
-          $(obj).find('i').html('&#xe62f;');
-
-          $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-          layer.msg('已停用!', {
-            icon: 5,
-            time: 1000
-          });
-
-        } else {
-          $(obj).attr('title', '启用')
-          $(obj).find('i').html('&#xe601;');
-
-          $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-          layer.msg('已启用!', {
-            icon: 5,
-            time: 1000
-          });
-        }
-
-      });
-    }
 
     /*用户-删除*/
-    function emp_del(obj, id) {
+    function dayoff_del(obj, id) {
       layer.confirm('确认要删除吗？', function (index) {
         //发异步删除数据
         $(obj).parents("tr").remove();
@@ -136,7 +107,7 @@
 
       //执行一个laydate实例
       table.render({
-        elem: '#emp-list'
+        elem: '#dayoff-list'
         ,height: 430
         ,url: '../php/getDayoff.php' //数据接口
         ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
@@ -149,6 +120,7 @@
           ,{field: 'dayoff_id', title: '请假编号', sort: true, fixed: 'left'}
           ,{field: 'emp_id', title: '员工ID ',}
           ,{field: 'name', title: '员工名字', sort: true, totalRow: true}
+          ,{field: 'reason', title: '请假原因',  totalRow: true}
           ,{field: 'start', title: '开始时间',width:150,  sort: true, totalRow: true}
           ,{field: 'end', title: '结束时间',width:150,  sort: true, totalRow: true}
           ,{fixed: 'right', width: 190, align:'center', toolbar: '#barDemo'}
@@ -162,7 +134,7 @@
 
      
       //监听行工具事件
-      table.on('tool(emp-list)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      table.on('tool(dayoff-list)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
         ,layEvent = obj.event; //获得 lay-event 对应的值
         if(layEvent === 'detail'){
@@ -190,7 +162,10 @@
             })
           });
         } else if(layEvent === 'edit'){
+          console.log(data.start)
           layer.msg('编辑操作');
+          var url=createURL('./dayoff-edit.html',data)
+          x_admin_show('修改请假信息',url,600,400)
         }
       });
 
