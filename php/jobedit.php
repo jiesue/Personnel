@@ -3,11 +3,12 @@ include 'mysql.class.php';
 include 'checkLogin.php';
 
 
+$job_id = $_POST['job_id'];
 $dept_id = $_POST['dept_id'];
-$dept_name = $_POST['dept_name'];
-$createdate = $_POST['createdate'];
+$name = $_POST['name'];
+$desc = $_POST['desc'];
 //  echo "user_id = ${dept_id} ";
-$res = $mysql->update('dept', [ 'dept_name' => $dept_name, 'createdate' => $createdate ], "dept_id = '${dept_id}' ");
+$res = $mysql->update('job', [ 'dept_id' => $dept_id, 'name' => $name,'desc'=>$desc ], "job_id = '${job_id}' ");
 echo $res;
 
 

@@ -144,9 +144,27 @@
             obj.del(); //删除对应行（tr）的DOM结构
             layer.close(index);
             //向服务端发送删除指令
+            $.ajax({
+              type: 'post',
+              url: '../php/del.php',
+              data: {
+                id: data.job_id,
+                table: 'job',
+                field: 'job_id'
+              },
+              complete: function (res) {
+                // console.log(res)
+                if (res.status === 200) {
+                  obj.del(); //删除对应行（tr）的DOM结构
+                  layer.close(index);
+                }
+              }
+            })
           });
         } else if(layEvent === 'edit'){
-          layer.msg('编辑操作');
+          // layer.msg('编辑操作');
+          var url=createURL('./job-edit.html',data)
+          x_admin_show('修改职位信息',url,600,400)
         }
       });
 

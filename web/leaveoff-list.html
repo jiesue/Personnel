@@ -162,7 +162,9 @@
             })
           });
         } else if(layEvent === 'edit'){
-          layer.msg('编辑操作');
+          // layer.msg('编辑操作');
+          var url=createURL('./leaveoff-edit.html',data)
+          x_admin_show('修改离职信息',url,600,400)
         }
       });
 

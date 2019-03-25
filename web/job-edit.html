@@ -23,69 +23,115 @@
 <body>
     <div class="x-body">
         <form class="layui-form">
+            
             <div class="layui-form-item">
-                <label for="dayoff_id" class="layui-form-label">
-                    <span class="x-red">*</span>员工id
+                <label for="L_job_id" class="layui-form-label">
+                    <span class="x-red">*</span>职位ID
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="emp_id" name="emp_id" required="" lay-verify="required" autocomplete="off"
+                    <input type="text" id="L_job_id" name="job_id" disabled autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_name" class="layui-form-label">
+                    <span class="x-red">*</span>职位名称
+                </label>
+
+                <div class="layui-input-inline">
+                        <input type="text" id="L_name" name="name" autocomplete="off"
                         class="layui-input">
                 </div>
-
+            </div>
+    
+            
+            <div class="layui-form-item">
+                <label for="L_dept_name" class="layui-form-label">
+                    <span class="x-red">*</span>所属部门
+                </label>
+                <div class="layui-input-inline"  id="dept_select" >
+                
+                </div>
             </div>
             <div class="layui-form-item">
-                <label for="reason" class="layui-form-label">
-                    <span class="x-red">*</span>离职原因
+                <label for="L_desc" class="layui-form-label">
+                    <span class="x-red">*</span>职位描述
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="reason" name="reason" required="" lay-verify="" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_desc" name="desc" required="" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
-
             </div>
-            <div class="layui-form-item">
-                <label for="L_date" class="layui-form-label">
-                    <span class="x-red">*</span>离职时间
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_date" name="start" required="" autocomplete="off" class="layui-input">
-                </div>
-               
-            </div>
-
-
+           
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                    修改
                 </button>
             </div>
         </form>
     </div>
     <script>
-        layui.use(['form', 'layer', 'laydate'], function () {
+
+        var urlData = parseQueryString(decodeURI(window.location.href))
+        // console.log(urlData)
+        $('#L_job_id').val(urlData.job_id);
+        $('#L_name').val(urlData.name);
+        $('#L_desc').val(urlData.desc);
+
+        
+      
+        layui.use(['form', 'layer','laydate'], function () {
             $ = layui.jquery;
-            var date = layui.laydate;
             var form = layui.form,
                 layer = layui.layer;
+            var date = layui.laydate;
 
             date.render({
-                elem: '#L_date' ,//指定元素
+                elem: '#L_createdate' ,//指定元素
                 type:'datetime'
             });
+            //设置部门下拉选框
+        $.ajax({
+            type: 'post',
+            url: '../php/getDept.php',
+            complete: function (res) {
+                if (res.status === 200) {
+
+                    var data = JSON.parse(res.responseText).data;
+                    var target = $(' <select name="dept_id" lay-verify="" style="display:block;"></select>');
+                    console.log(data);
+
+                    for(var i=0; i<data.length; i++){
+                        if(data[i].dept_id == urlData.dept_id){
+                            var html = " <option value='"+data[i].dept_id+"' selected> "+data[i].dept_name+" </option>";
+
+                        }else{
+                            var html = " <option value='"+data[i].dept_id+"'> "+data[i].dept_name+" </option>";
+
+                        }
+                        $(html).appendTo(target);
+                    }
+                    $(target).appendTo($('#dept_select'))
+
+                }
+            }
+        })
 
             //监听提交
             form.on('submit(add)', function (data) {
+                // alert(1)
                 // data.field.id = id;
+                data.field.job_id = urlData.job_id;
+                console.log(data.field)
                 $.ajax({
                     type: 'post',
-                    url: '../php/leaveoffadd.php',
+                    url: '../php/jobedit.php',
                     data: data.field,
                     complete: function (res) {
-                        console.log(res)
+                        // console.log(res)
                         if (res.status === 200) {
 
-                            layer.alert("增加成功", {
+                            layer.alert("修改成功", {
                                 icon: 6
                             }, function () {
                                 //关闭当前frame
@@ -99,9 +145,7 @@
 
 
                         } else if (res.status === 400) {
-                            layer.msg('员工id不存在！！')
-                        } else if (res.status === 401) {
-                            layer.msg('增加失败！！')
+                            layer.msg('失败！！')
                         }
                     }
 
@@ -111,6 +155,7 @@
 
                 return false;
             });
+           
 
 
         });

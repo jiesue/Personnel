@@ -4,16 +4,17 @@ include 'checkLogin.php';
 
 
 $loginname = $_POST['loginname'];
-$pass = $_POST['pass'];
 $nickname = $_POST['nickname'];
+$password = $_POST['password'];
 
-// $res = $mysql->fetchAll();
-$num = $mysql->select('user', '', " loginname = '${loginname}' ");
-$dataArr = array('loginname' => $loginname , 'password' => $pass, 'nickname' => $nickname );
+
+$num = $mysql->select('user', '', "loginname = '${loginname}' ");
+
+$dataArr = array('loginname' => $loginname , 'nickname' => $nickname,'password' => $password);
+
 if(!$num){
     $res = $mysql->insert('user', $dataArr);
-    echo $res;
-    if($res){
+    if(isset($res)){
         httpStatus(200);
     }else{
         httpStatus(401);
@@ -22,12 +23,7 @@ if(!$num){
 }else{
     httpStatus(400);
 }
-// var_dump($res) ;
-// if($num)
-// $resArr = array('code' => 200 , 'msg' => '請求成功' , 'count' => $num, 'data' => $res );
-// $res2 = json_encode($resArr,JSON_UNESCAPED_UNICODE);
-// echo ($res2);
-// httpStatus(200);
+
 
 
 

@@ -23,69 +23,95 @@
 <body>
     <div class="x-body">
         <form class="layui-form">
+            
             <div class="layui-form-item">
-                <label for="dayoff_id" class="layui-form-label">
-                    <span class="x-red">*</span>员工id
+                <label for="L_dept_id" class="layui-form-label">
+                    <span class="x-red">*</span>ID
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="emp_id" name="emp_id" required="" lay-verify="required" autocomplete="off"
+                    <input type="text" id="L_dept_id" name="dept_id" disabled autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_dept_name" class="layui-form-label">
+                    <span class="x-red">*</span>部门名称
+                </label>
+
+                <div class="layui-input-inline">
+                        <input type="text" id="L_dept_name" name="dept_name" autocomplete="off"
                         class="layui-input">
                 </div>
-
             </div>
+    
+            
             <div class="layui-form-item">
-                <label for="reason" class="layui-form-label">
-                    <span class="x-red">*</span>离职原因
+                <label for="L_createdate" class="layui-form-label">
+                    <span class="x-red">*</span>创建时间
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="reason" name="reason" required="" lay-verify="" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_createdate" name="createdate" required="" lay-verify="required" autocomplete="off" class="layui-input">
                 </div>
-
             </div>
-            <div class="layui-form-item">
-                <label for="L_date" class="layui-form-label">
-                    <span class="x-red">*</span>离职时间
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_date" name="start" required="" autocomplete="off" class="layui-input">
-                </div>
-               
-            </div>
-
-
+           
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
                 <button class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                    修改
                 </button>
             </div>
         </form>
     </div>
     <script>
-        layui.use(['form', 'layer', 'laydate'], function () {
+
+        var urlData = parseQueryString(decodeURI(window.location.href))
+        // console.log(urlData)
+        $('#L_dept_id').val(urlData.dept_id);
+        $('#L_dept_name').val(urlData.dept_name);
+        $('#L_createdate').val(urlData.createdate);
+
+        
+      
+        layui.use(['form', 'layer','laydate'], function () {
             $ = layui.jquery;
-            var date = layui.laydate;
             var form = layui.form,
                 layer = layui.layer;
+            var date = layui.laydate;
 
             date.render({
-                elem: '#L_date' ,//指定元素
+                elem: '#L_createdate' ,//指定元素
                 type:'datetime'
+            });
+            //自定义验证规则
+            form.verify({
+                nikename: function (value) {
+                    if (value.length < 5) {
+                        return '昵称至少得5个字符啊';
+                    }
+                },
+                pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                repass: function (value) {
+                    if ($('#L_pass').val() != $('#L_repass').val()) {
+                        return '两次密码不一致';
+                    }
+                }
             });
 
             //监听提交
             form.on('submit(add)', function (data) {
+                // alert(1)
                 // data.field.id = id;
+                data.field.dept_id = urlData.dept_id;
+                console.log(data.field)
                 $.ajax({
                     type: 'post',
-                    url: '../php/leaveoffadd.php',
+                    url: '../php/deptedit.php',
                     data: data.field,
                     complete: function (res) {
-                        console.log(res)
+                        // console.log(res)
                         if (res.status === 200) {
 
-                            layer.alert("增加成功", {
+                            layer.alert("修改成功", {
                                 icon: 6
                             }, function () {
                                 //关闭当前frame
@@ -99,9 +125,7 @@
 
 
                         } else if (res.status === 400) {
-                            layer.msg('员工id不存在！！')
-                        } else if (res.status === 401) {
-                            layer.msg('增加失败！！')
+                            layer.msg('失败！！')
                         }
                     }
 
@@ -111,6 +135,7 @@
 
                 return false;
             });
+           
 
 
         });

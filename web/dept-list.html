@@ -118,8 +118,8 @@
         ,cols: [[ //表头
           {type: 'checkbox', fixed: 'left'}
           ,{field: 'dept_id', title: 'ID', sort: true, fixed: 'left'}
-          ,{field: 'dept_name', title: '部门', sort: true, totalRow: true}
-          ,{field: 'join_date', title: '加入日期',width:150,  sort: true, totalRow: true}
+          ,{field: 'dept_name', title: '部门名称', sort: true, totalRow: true}
+          ,{field: 'createdate', title: '创建日期',width:150,  sort: true, totalRow: true}
           ,{fixed: 'right', width: 190, align:'center', toolbar: '#barDemo'}
         ]]
        
@@ -141,9 +141,27 @@
             obj.del(); //删除对应行（tr）的DOM结构
             layer.close(index);
             //向服务端发送删除指令
+            $.ajax({
+              type: 'post',
+              url: '../php/del.php',
+              data: {
+                id: data.dept_id,
+                table: 'dept',
+                field: 'dept_id'
+              },
+              complete: function (res) {
+                // console.log(res)
+                if (res.status === 200) {
+                  obj.del(); //删除对应行（tr）的DOM结构
+                  layer.close(index);
+                }
+              }
+            })
           });
         } else if(layEvent === 'edit'){
-          layer.msg('编辑操作');
+          // layer.msg('编辑操作');
+          var url=createURL('./dept-edit.html',data)
+          x_admin_show('修改部门信息',url,600,400)
         }
       });
 
