@@ -24,7 +24,7 @@
     <div class="x-body">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label for="dayoff_id" class="layui-form-label">
+                <label for="attence_id" class="layui-form-label">
                     <span class="x-red">*</span>员工id
                 </label>
                 <div class="layui-input-inline">
@@ -33,34 +33,17 @@
                 </div>
 
             </div>
+         
             <div class="layui-form-item">
-                <label for="reason" class="layui-form-label">
-                    <span class="x-red">*</span>请假原因
+                <label for="L_time" class="layui-form-label">
+                    <span class="x-red">*</span>打卡时间
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="reason" name="reason" required="" lay-verify="" autocomplete="off" class="layui-input">
-                </div>
-
-            </div>
-            <div class="layui-form-item">
-                <label for="L_start" class="layui-form-label">
-                    <span class="x-red">*</span>开始时间
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_start" name="start" required="" autocomplete="off" class="layui-input">
+                    <input type="text" id="L_time" name="time" required="" autocomplete="off" class="layui-input">
                 </div>
                
             </div>
 
-            <div class="layui-form-item">
-                <label for="L_end" class="layui-form-label">
-                    <span class="x-red">*</span>结束时间
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_end" name="end" required="" autocomplete="off" class="layui-input">
-                </div>
-
-            </div>
 
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
@@ -79,7 +62,7 @@
                 layer = layui.layer;
 
                 date.render({
-                elem: '#L_end' ,//指定元素
+                elem: '#L_time' ,//指定元素
                 type:'datetime'
             });
             date.render({
@@ -93,7 +76,7 @@
                 // data.field.id = id;
                 $.ajax({
                     type: 'post',
-                    url: '../php/dayoffadd.php',
+                    url: '../php/attenceadd.php',
                     data: data.field,
                     complete: function (res) {
                         console.log(res)
