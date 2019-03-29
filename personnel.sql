@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2019-03-08 12:35:28
+-- Generation Time: 2019-03-29 11:55:51
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -23,24 +23,49 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `attence`
+--
+
+CREATE TABLE IF NOT EXISTS `attence` (
+  `attence_id` int(11) NOT NULL AUTO_INCREMENT,
+  `emp_id` varchar(20) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `remarks` text NOT NULL,
+  PRIMARY KEY (`attence_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `attence`
+--
+
+INSERT INTO `attence` (`attence_id`, `emp_id`, `time`, `remarks`) VALUES
+(1, '1', '2019-03-30 06:49:56', ''),
+(3, '3', '2019-03-28 07:04:00', '');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `dayoff`
 --
 
 CREATE TABLE IF NOT EXISTS `dayoff` (
   `dayoff_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` varchar(20) DEFAULT NULL,
+  `reason` tinytext COMMENT '请假原因',
   `start` timestamp NOT NULL,
   `end` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`dayoff_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `dayoff`
 --
 
-INSERT INTO `dayoff` (`dayoff_id`, `emp_id`, `start`, `end`) VALUES
-(1, '1', '2019-03-04 13:34:27', '2019-03-27 13:33:27'),
-(2, '2', '2019-03-04 13:34:50', '2019-03-18 16:00:00');
+INSERT INTO `dayoff` (`dayoff_id`, `emp_id`, `reason`, `start`, `end`) VALUES
+(1, '1', '6666', '2018-12-31 16:00:00', '2019-03-27 13:33:27'),
+(2, '2', '53145', '2000-02-27 16:00:00', '2019-03-18 16:00:00'),
+(3, '2', '2', '2019-03-20 12:24:02', '2019-03-20 16:00:00'),
+(4, '1', '1', '2019-03-20 12:24:21', '2019-03-27 16:00:00');
 
 -- --------------------------------------------------------
 
@@ -60,15 +85,14 @@ CREATE TABLE IF NOT EXISTS `dept` (
 --
 
 INSERT INTO `dept` (`dept_id`, `dept_name`, `createdate`) VALUES
-('1', '技术部', '2019-03-05 09:58:21'),
-('2', '运营部', '2019-03-05 09:58:21'),
-('3', '财务部', '2019-03-05 09:58:21'),
-('5', '总公办', '2019-03-05 09:58:21'),
-('6', '市场部', '2019-03-05 09:58:21'),
-('7', '教学部', '2019-03-05 09:58:21'),
+('jie001', '技术部', '2019-03-29 09:58:21'),
+('jie002', '运营部', '2019-03-05 09:58:21'),
+('jie003', '财务部', '2019-03-05 09:58:21'),
+('jie004', '行政部', '2019-03-05 09:58:21'),
+('jie005', '市场部', '2019-03-05 09:58:21'),
+('jie006', '教学部', '2019-03-05 09:58:21'),
 ('cc31', 'jie1', '2019-03-05 09:58:21'),
-('323', '323', '2019-03-06 10:50:32'),
-('34234', '234', '2019-03-06 10:52:11');
+('323', '323', '2019-03-06 10:50:32');
 
 -- --------------------------------------------------------
 
@@ -88,17 +112,17 @@ CREATE TABLE IF NOT EXISTS `emp` (
   `education` varchar(10) DEFAULT NULL,
   `join_date` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`emp_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- 转存表中的数据 `emp`
 --
 
 INSERT INTO `emp` (`emp_id`, `dept_id`, `name`, `address`, `tel`, `email`, `sex`, `birthday`, `education`, `join_date`) VALUES
-(1, '1', '爱丽丝', '广州天河', '020-77777777', '251425887@qq.com', '男', '1980-01-01 00:00:00', '本科', '2016-03-14 11:35:18'),
-(2, '3', '杰克', '43234', '42242', '251425887@qq.com', '女', NULL, '1', '2016-03-14 11:35:18'),
-(3, '1', 'bb', '广州', '020-99999999', '36750064@qq.com', '女', '1977-11-25 00:00:00', '本科', '2016-07-14 09:54:52'),
-(5, '1', '1', '1', NULL, '1', '女', NULL, '1', NULL);
+(1, 'jie001', '爱丽丝12', '广州天河', '220-77777777', '251425887@qq.com', '女', '1996', '博士', '2016-03-14 11:35:18'),
+(2, 'jie003', '杰克', '43234', '42242', '251425887@qq.com', '女', '1996', '小学', '2016-03-14 11:35:18'),
+(3, 'jie004', 'bb', '广州', '020-99999999', '36750064@qq.com', '女', '1977-11-25 00:00:00', '本科', '2016-07-14 09:54:52'),
+(10, 'jie001', '博士11', '广州', '134328071', '936416416@ww.com', '女', '1996', '硕士', NULL);
 
 -- --------------------------------------------------------
 
@@ -119,40 +143,37 @@ CREATE TABLE IF NOT EXISTS `job` (
 --
 
 INSERT INTO `job` (`job_id`, `dept_id`, `name`, `desc`) VALUES
-('1', '0', '职员1', '职员'),
-('2', '0', 'Java开发工程师', 'Java开发工程师'),
-('3', '0', 'Java中级开发工程师', 'Java中级开发工程师'),
-('4', '0', 'Java高级开发工程师', 'Java高级开发工程师'),
-('5', '0', '系统管理员', '系统管理员'),
-('6', '0', '架构师', '架构师'),
-('7', '0', '主管', '主管'),
-('8', '0', '经理', '经理'),
-('9', '0', '总经理', '总经理'),
-('10', '0', '2', '2'),
-('11', '0', '1', '2,3,4,5,6,7');
+('2', 'jie001', 'Java开发工程师', 'Java开发工程师'),
+('3', 'jie001', 'Java中级开发工程师', 'Java中级开发工程师'),
+('4', 'jie001', 'Java高级开发工程师', 'Java高级开发工程师'),
+('5', 'jie001', '系统管理员', '系统管理员'),
+('6', 'jie001', '架构师', '架构师'),
+('7', 'jie004', '主管', '主管'),
+('8', 'jie004', '经理', '经理'),
+('9', 'jie005', '总经理', '总经理');
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `leave`
+-- 表的结构 `leaveoff`
 --
 
-CREATE TABLE IF NOT EXISTS `leave` (
+CREATE TABLE IF NOT EXISTS `leaveoff` (
   `leave_id` int(11) NOT NULL AUTO_INCREMENT,
   `emp_id` varchar(20) DEFAULT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `reason` text NOT NULL,
   PRIMARY KEY (`leave_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=5 ;
 
 --
--- 转存表中的数据 `leave`
+-- 转存表中的数据 `leaveoff`
 --
 
-INSERT INTO `leave` (`leave_id`, `emp_id`, `date`, `reason`) VALUES
+INSERT INTO `leaveoff` (`leave_id`, `emp_id`, `date`, `reason`) VALUES
 (1, '1', '2019-03-04 13:47:11', '123464545'),
 (2, '2', '2019-03-04 13:48:03', '232423423'),
-(3, '3', '2019-03-19 16:00:00', 'ewrwerwerwer');
+(4, '3', '0000-00-00 00:00:00', '5646546654jie');
 
 -- --------------------------------------------------------
 
@@ -194,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `loginname` (`loginname`),
   KEY `createdate` (`createdate`),
   KEY `createdate_2` (`createdate`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- 转存表中的数据 `user`
@@ -203,12 +224,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`user_id`, `loginname`, `password`, `status`, `createdate`, `nickname`) VALUES
 (1, 'admin', '123456', 0, '2016-03-12 01:34:28', '超级管理员'),
 (17, 'uu', 'uu', 1, '2019-03-06 10:44:17', 'uu'),
+(19, 'zj', 'zj', 1, '2019-03-25 08:23:44', ''),
 (9, 'jie', 'jie', 1, '2019-03-05 08:33:17', 'jie'),
 (10, '111', '111', 0, '2019-03-05 08:33:26', '111'),
 (11, '222', '222', 1, '2019-03-05 08:37:22', '222'),
 (12, '333', '333', 0, '2019-03-05 08:38:42', '333'),
 (15, '444', '444', 1, '2019-03-05 08:41:48', '444'),
-(18, 'gg', 'gg', 1, '2019-03-06 10:45:17', 'gg');
+(18, 'gg', 'gg', 1, '2019-03-06 10:45:17', 'gg'),
+(20, 'zj2', 'zj2', 1, '2019-03-25 08:24:43', 'zj2');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
