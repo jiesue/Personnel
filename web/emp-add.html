@@ -164,12 +164,13 @@
             form.on('submit(add)', function (data) {
                 // alert(1)
                 // data.field.id = id;
+                console.log(data.field)
                 $.ajax({
                     type: 'post',
                     url: '../php/empadd.php',
                     data: data.field,
                     complete: function (res) {
-                        console.log(res)
+                        // console.log(res)
                         if (res.status === 200) {
 
                             layer.alert("增加成功", {

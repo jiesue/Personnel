@@ -14,7 +14,7 @@ $education = $_POST['education'];
 
 // $res = $mysql->fetchAll();
 
-$dataArr = array('dept_id' => $dept_id , 'name' => $name, 'sex' => $sex, 'email' => $email, 'address' => $address, 'tel' => $tel, 'birthday' => $birthday, 'name' => $education);
+$dataArr = array('dept_id' => $dept_id , 'name' => $name, 'sex' => $sex, 'email' => $email, 'address' => $address, 'tel' => $tel, 'birthday' => $birthday, 'education' => $education);
 
     $res = $mysql->insert('emp', $dataArr);
     echo $res;
